@@ -1,47 +1,45 @@
-export interface Category {
-  id: number;
-  code: string;
-  description: string;
-  account: string;
-  active: boolean;
+export interface GenericResponse<T> {
+  result: boolean;
+  errors: Array<string>;
+  content?: T | null;
 }
 
-export interface EmployeeCategory {
-  id: number;
-  code: string;
-  description: string;
-  costPrice: number;
-  salePrice: number;
-  account: string;
-  active: boolean;
+export interface AuthenticationResponse {
+  token: string;
+  refreshToken: string;
+  result: boolean;
+  errors: Array<string>;
 }
 
-export interface Event {}
-
-export interface EventStatus {
-  id: number;
-  code: string;
-  description: string;
-  active: boolean;
+export interface Region {
+  id: string;
+  nm: string;
 }
 
-export interface Item {
-  id: number;
-  code: string;
-  description: string;
-  costPrice: number;
-  salePrice: number;
-  categoryId: number;
-  categoryDescription: string;
-  forPurchase: boolean;
-  forManufacture: boolean;
-  forSale: boolean;
-  active: boolean;
+export interface Role {
+  id: string;
+  name: string;
 }
 
-export interface ImportsByAccount  {
-  account: string;
-  description: string;
-  costprice: number;
-  saleprice:number;
+export interface User {
+  id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  disabled: boolean;
+  roleId: string;
+  role?: Role;
+}
+
+export interface File {
+  entity: string;
+  entityId: string;
+  type: number;
+  size: number;
+  originalName: string;
+  path: string;
+  id: string;
+  createdOn: string;
+  updatedOn: string;
+  disabled: boolean;
 }

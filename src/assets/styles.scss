@@ -1,26 +1,145 @@
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+:root {
+  --top-panel-height: 4rem;
+  --side-bar-width: 250px;
+  --side-bar-collapsed-width: 50px;
+  --collapsed-side-padding: 15px;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+body {
+  font-family: var(--font-family);
 }
-.navbar {
-  margin-bottom: 10px;
+
+.two-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
-.logo {
-  max-width: 50px;
+
+.two-columns-7525 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+.two-columns-2575 {
+  display: grid;
+  grid-template-columns: 0.33fr 0.68fr;
+  gap: 1rem;
+}
+
+.three-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.four-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.five-columns {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.vsm--header {
+  font-size: 1.5rem !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  padding-left: 1rem !important;
+}
+
+.vsm--toggle-btn {
+  height: 50px !important;
+}
+
+.vsm--link_open {
+  background-color: var(--blue-700) !important;
+}
+
+.summary-field {
+  font-weight: bold;
+  color: black;
+}
+
+.grid_add_row_button {
+  position: fixed !important;
+  right: 2rem !important;
+  z-index: 1 !important;
+}
+
+.grid_delete_column_button {
+  color: var(--red-600);
+  cursor: pointer;
+}
+
+.grid_copy_column_button {
+  cursor: pointer;
+}
+
+.p-card .p-card-content {
+  padding: 0.5rem !important;
+}
+
+.p-card .p-card-body {
+  padding: 1rem !important;
+}
+
+.p-password > input {
+  width: 100% !important;
+}
+
+.p-calendar {
+  display: flex !important;
+}
+
+.p-calendar > input {
+  width: 100% !important;
+}
+
+table > tbody > tr {
+  font-size: 0.8rem !important;
+}
+
+.flex-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.datatable-filter {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.datatable-filter-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.datatable-filter-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.datatable-filter-5 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr;
+  gap: 2rem;
+}
+
+.filter-field {
+  display: grid;
+  grid-template-columns: 0.4fr 1fr;
+  font-size: 0.8rem !important;
+}
+
+.filter-field > label {
+  padding-top: 12px;
+  font-size: 1rem;
 }

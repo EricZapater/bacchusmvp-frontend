@@ -1,38 +1,30 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "./views/Home.vue";
+import SharedRoutes from "./modules/shared/routes";
+import PurchaseRoutes from "./modules/purchase/routes";
+import SalesRoutes from "./modules/sales/routes";
+import ProductionRoutes from "./modules/production/routes";
+import WarehouseRoutes from "./modules/warehouse/routes";
+import ShoopfloorRoutes from "./modules/shoopfloor/routes";
 
-
-const Item = () => import("./views/Item.vue");
-const Category = () => import("./views/Category.vue");
-const EmployeeCategory = () => import("./views/EmployeeCategory.vue");
-const EventStatus = () => import("./views/EventStatus.vue");
-const Event = () => import("./views/Event.vue");
+const Home = () => import("./views/Home.vue");
+const Users = () => import("./views/Users.vue");
+const User = () => import("./views/User.vue");
+const Reports = () => import("./views/Reports.vue");
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/", name: "Home", component: Home },
-    { path: "/config/category", name: "Category", component: Category },
-    {
-      path: "/config/employeecategory",
-      name: "EmployeeCategory",
-      component: EmployeeCategory,
-    },
-    {
-      path: "/config/eventstatus",
-      name: "EventStatus",
-      component: EventStatus,
-    },
-    {
-      path: "/config/item",
-      name: "item",
-      component: Item,
-    },
-    {
-      path: "/data/event",
-      name: "event",
-      component: Event,
-    },
+
+    { path: "/users", name: "Users", component: Users },
+    { path: "/user/:id", name: "User", component: User },
+    { path: "/reports", name: "Reports", component: Reports },
+    ...SharedRoutes,
+    ...SalesRoutes,
+    ...PurchaseRoutes,
+    ...ProductionRoutes,
+    ...WarehouseRoutes,
+    ...ShoopfloorRoutes,
   ],
 });
 

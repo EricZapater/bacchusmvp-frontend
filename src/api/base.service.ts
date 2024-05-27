@@ -1,5 +1,6 @@
-import { Axios, AxiosInstance } from "axios";
-import apiClient from "./api.client";
+import { AxiosInstance } from "axios";
+import apiClient, { logException } from "./api.client";
+import { CreateReceiptRequest } from "../modules/purchase/types";
 
 export default abstract class BaseService<T> {
   public apiClient: AxiosInstance;
@@ -7,19 +8,65 @@ export default abstract class BaseService<T> {
     this.apiClient = apiClient;
   }
 
-  getAll() {
-    return apiClient.get(this.resource);
+  async getAll(): Promise<Array<T> | undefined> {
+    try {
+      const response = await apiClient.get(this.resource);
+      if (response.status === 200) {
+        return response.data as Array<T>;
+      }
+    } catch (err) {
+      logException(err);
+    }
   }
-  getById(id: number) {
-    return apiClient.get(`${this.resource}/${id}`);
+  async getActive(): Promise<Array<T> | undefined> {
+    const response = await this.getAll();
+    if (response && response.length > 0)
+      return response.filter((e) => (e as any).disabled === false);
   }
-  create(model: T) {
-    return apiClient.post(this.resource, model);
+  async getById(id: string): Promise<T | undefined> {
+    try {
+      const response = await apiClient.get(`${this.resource}/${id}`);
+      if (response.status === 200) {
+        return response.data as T;
+      }
+    } catch (err) {
+      logException(err);
+    }
   }
-  update(model: T) {
-    return apiClient.put(this.resource, model);
+  async create(model: T | CreateReceiptRequest): Promise<boolean> {
+    let result: boolean = false;
+    try {
+      const response = await apiClient.post(`${this.resource}`, model);
+      if (response.status === 200 || response.status === 201) {
+        result = true;
+      }
+    } catch (err) {
+      logException(err);
+    }
+    return result;
   }
-  delete(id: number) {
-    return apiClient.delete(`${this.resource}/${id}`);
+  async update(id: string, model: T) {
+    let result: boolean = false;
+    try {
+      const response = await apiClient.put(`${this.resource}/${id}`, model);
+      if (response.status === 200 || response.status === 201) {
+        result = true;
+      }
+    } catch (err) {
+      logException(err);
+    }
+    return result;
+  }
+  async delete(id: string) {
+    let result: boolean = false;
+    try {
+      const response = await apiClient.delete(`${this.resource}/${id}`);
+      if (response.status === 200 || response.status === 201) {
+        result = true;
+      }
+    } catch (err) {
+      logException(err);
+    }
+    return result;
   }
 }

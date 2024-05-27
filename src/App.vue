@@ -1,75 +1,73 @@
 <script setup lang="ts">
-//import { useRouter } from "vue-router";
-//import { useStore } from "./store";
-import MenuBar from "primevue/menubar";
-import Toolbar from "primevue/toolbar";
+import { useStore } from "./store";
+import { useApiStore } from "./store/backend";
+import { useSpanishGeography } from "./store/geography";
+import Header from "./components/TheHeader.vue";
+import SideBar from "./components/TheSidebar.vue";
+import Login from "./views/Login.vue";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+import ProgressSpinner from "primevue/progressspinner";
+import ScrollPanel from "primevue/scrollpanel";
 
-//const store = useStore();
-//const router = useRouter();
+const store = useStore();
+const apiStore = useApiStore();
+const spanishGeography = useSpanishGeography();
+const router = useRouter();
 
-const items = [
-  {
-    label: "Inici",
-    icon: "pi pi-home",
-    to: "/",
-  },
-  {
-    label: "Articles",
-    items: [
-      {
-        label: "Articles",
-        to: "/config/item",
-      },
-      {
-        label: "Categories d'article",
-        to: "/config/category",
-      },
-    ],
-  },
-  {
-    label: "Operaris",
-    items: [
-      {
-        label: "Categories d'operari",
-        to: "/config/employeecategory",
-      },
-    ],
-  },
-  {
-    label: "Events",
-    items: [
-      {
-        label: "Estats",
-        to: "/config/eventstatus",
-      },
-      {
-        label: "Events",
-        to: "/data/event",
-      },
-    ],
-  },
-];
+onMounted(() => {
+  store.getAuthorization();
+  spanishGeography.fetch();
+});
+
+const logout = () => {
+  store.removeAuthorization();
+  router.push("/");
+};
 </script>
 
 <template>
-  <Toolbar>
-    <template #start>
-      <img src="./assets/images/logo.png" class="logo" />
-      <h3>Bacchus</h3>
-    </template>
+  <div v-if="store.authorization">
+    <Header @logout-click="logout" />
+    <SideBar />
+    <main class="app__view" :class="{ collapsed: store.menuCollapsed }">
+      <ScrollPanel style="height: calc(100vh - 5rem)">
+        <RouterView />
+      </ScrollPanel>
+    </main>
+  </div>
 
-    <template #end>
-      <i class="pi pi-user" /> &nbsp;&nbsp; Nom usuari &nbsp;&nbsp;
-      <Button icon="pi pi-times" class="p-button-danger" />
-    </template>
-  </Toolbar>
-  <MenuBar :model="items" class="navbar" />
-  <RouterView />
+  <Login v-else />
 
   <Toast position="top-center" />
   <ConfirmDialog />
+  <ProgressSpinner v-if="apiStore.isWaiting" class="spinner" />
 </template>
 
 <style lang="scss">
 @import "./assets/styles.scss";
+
+.app__view {
+  position: fixed;
+  color: var(--bluegray-200);
+  top: var(--top-panel-height);
+  left: var(--side-bar-width);
+  padding: 1rem;
+  width: calc(100vw - var(--side-bar-width));
+  transition: all 0.3s ease-in-out;
+}
+
+.collapsed {
+  left: calc(var(--side-bar-collapsed-width) + var(--collapsed-side-padding));
+  width: calc(
+    100vw - var(--side-bar-collapsed-width) - var(--collapsed-side-padding)
+  );
+}
+
+.spinner {
+  position: absolute;
+  top: calc(50% - var(--top-panel-height));
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>
